@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}ESN ULB Brussesl - vote{% endblock %}
+
+{% block content %}
+<div class="w-full bg-slate-50">
+
+  <div class="max-w-md mx-auto my-8 p-6 bg-white rounded-md shadow-md">
+    <h2 class="text-2xl font-semibold mb-6">{{vote.title}}</h2>
+    <form action="{% url 'vote' vote.id %}" method="post" class="flex flex-col space-y-4">
+      {% csrf_token %}
+      <label for="description" class="mb-1">{{vote.description}}</label>
+      <input type="hidden" name="vote_id" value="{{vote.id}}">
+      {% if vote.max_num_choices == 1 %}
+        {% for option in vote.options.all %}
+            <div class="flex items-center space-x-4 mb-2">
+                <input type="radio" name="option" value="{{option.id}}" required>
+                <span>{{option.option_text}}</span>
+            </div>
+        {% endfor %}
+      {% else %}
+          <span>Vous pouvez selectioner maximum {{ vote.max_num_choices }} options.</span>
+          {% for option in vote.options.all %}
+              <div class="flex items-center space-x-4 mb-2">
+                  <input type="checkbox" name="option" value="{{option.id}}" onchange="limitSelections(this)">
+                  <span>{{option.option_text}}</span>
+              </div>
+          {% endfor %}
+      {% endif %}
+      
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Voter</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  function limitSelections(checkbox) {
+      var maxSelections = {{ vote.max_num_choices }};
+      var selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      
+      if (selectedCheckboxes.length > maxSelections) {
+          checkbox.checked = false;
+          alert("Vous pouvez selectioner maximum " + maxSelections + " options.");
+      }
+  }
+</script>
+
+{% endblock %}

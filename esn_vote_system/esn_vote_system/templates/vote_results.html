@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% load custom_filter %}
+<div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8 pb-8">
+
+    <div class="max-w-md flex flex-col w-full bg-white shadow-md px-6 pt-6">
+        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Resultats</h1>
+        <h2 class="text-lg font-semibold mb-4">{{vote.title}}</h2>
+        <h2 class="text-lg font-semibold mb-4">date: {{vote.session.date}}</h2>
+        <span class="text-lg font-semibold mb-4">{{vote.description}}</span>
+        <span class="text-lg font-semibold mb-4">Nombre de votes: {{vote.id|get_number_of_votes}}</span>
+    </div>
+
+    {% if vote.max_num_choices == 1%}
+        <div class="max-w-md w-full bg-white shadow-md p-6">
+            <canvas id="myChart"></canvas>
+        </div>
+    {% else %}
+
+    {% endif %}
+
+    <div class="flex flex-col max-w-md w-full bg-white shadow-md p-6">
+        <div class="flex flex-col">
+            {% for option in options %}
+                <div class="flex flex-row justify-between items-center py-2 px-4 border-b">
+                    <span>{{ option.option_text }}</span>
+                    <span>{{ option.number_votes }}</span>
+                </div>
+            {% endfor %}
+    </div>
+
+    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-blue-600">Retour</a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [
+        {% for option in options %}
+            '{{ option.option_text }}',
+        {% endfor %}
+      ],
+      datasets: [{
+        label: '# of Votes',
+        data: [
+            {% for option in options %}
+                {{ option.number_votes }},
+            {% endfor %}
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

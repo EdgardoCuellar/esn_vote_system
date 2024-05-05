@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8">
+
+    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6">
+        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Waiting room</h1>
+        <h2 class="text-lg font-semibold mb-4">{{session.title}}</h2>
+        <h2 class="text-lg font-semibold mb-4">date: {{session.date}}</h2>
+        <span class="text-lg font-semibold mb-4">{{session.description}}</span>
+    </div>
+
+    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6 mt-4">
+        <h2 class="text-lg font-semibold mb-4">Votes</h2>
+        <div class="flex flex-col">
+            {% for vote in votes %}
+            <a href="{% url 'vote' vote.id %}"
+                class="bg-blue-500 text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
+                <span>{{ vote.title }}</span>
+                <span>{{ vote.date }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

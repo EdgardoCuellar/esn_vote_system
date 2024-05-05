@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}ESN ULB Brussesl - create vote{% endblock %}
+
+{% block content %}
+
+<div class="sm:w-full md:w-96 mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Create a New Vote</h2>
+    <form action="{% url 'create_vote' %}" method="post" class="pb-8">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Titre</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" name="title" type="text" placeholder="Enter title" required>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description</label>
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" placeholder="Enter description" required></textarea>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="max_num_choices">Nombre max de choix</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max_num_choices" name="max_num_choices" type="number" min="1" value="1">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="session_id">Session</label>
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="session_id" name="session_id" required>
+                {% for session in sessions %}
+                    <option value="{{ session.id }}">{{ session.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="options-container" class="flex flex-col space-y-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Options</label>
+            <div class="flex items-center space-x-4 mb-2" id="option-1">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" name="option_text" type="text" placeholder="Enter option" required>
+            </div>
+            <div class="flex items-center space-x-4 mb-2" id="option-2">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" name="option_text" type="text" placeholder="Enter option" required>
+            </div>
+        </div>
+        <div class="flex flex-col space-y-4 mt-4">
+            <button type="button" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" onclick="addOption()">Add Option</button>
+            <button type="submit" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75">Create Vote</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let optionCounter = 2;
+
+    function addOption() {
+        optionCounter++;
+        const container = document.getElementById('options-container');
+        const div = document.createElement('div');
+        div.setAttribute('class', 'flex items-center space-x-4 mb-2');
+        div.setAttribute('id', 'option-' + optionCounter);
+        const input = document.createElement('input');
+        input.setAttribute('class', 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow');
+        input.setAttribute('name', 'option_text');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'Enter option');
+        input.setAttribute('required', '');
+        div.appendChild(input);
+        if (optionCounter > 2) {
+            const removeBtn = document.createElement('button');
+            removeBtn.setAttribute('type', 'button');
+            removeBtn.setAttribute('class', 'px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75');
+            removeBtn.textContent = '-';
+            removeBtn.onclick = function () {
+                container.removeChild(div);
+                optionCounter--;
+            };
+            div.appendChild(removeBtn);
+        }
+        container.appendChild(div);
+    }
+</script>
+
+{% endblock %}

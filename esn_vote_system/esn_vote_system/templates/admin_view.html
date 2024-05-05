@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8">
+
+    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6">
+        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Admin view</h1>
+        <a href="{% url 'generate_token' %}" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Generate Token</a>
+        <a href="{% url 'create_vote' %}" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Create Vote</a>
+    </div>
+
+    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6 mt-4">
+        <h2 class="text-lg font-semibold mb-4">Votes</h2>
+        <div class="flex flex-col">
+            {% for vote in votes %}
+            {% if vote.vote_opened %} 
+            <a href="{% url  'vote_results' vote.id %}"
+                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	 flex flex-row justify-between items-center py-2 px-4 border-b">
+            {% else %} 
+            <a href="{% url 'vote_update' vote.id %}"
+                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	 flex flex-row justify-between items-center py-2 px-4 border-b">
+            {% endif %} 
+                    <span>{{ vote.session.title }}</span>
+                    <span>{{ vote.title }}</span>
+                    <span>{{ vote.date }}</span>
+                    <span>{% if vote.vote_opened %} Resultat {% else %} Modifier {% endif %}</span>
+                </a>
+            {% endfor %}
+        </div>   
+    </div>
+
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ class Token(models.Model):
 
     @staticmethod
     def check_key(check_key):
-        key_file_path = 'private/register_token.txt'
+        key_file_path = './private/register_token.txt'
         key = ""
         with open(key_file_path, 'r') as f:
             key = f.read()

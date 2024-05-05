@@ -6,7 +6,7 @@
 {% load custom_filter %}
 <div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8 pb-8">
 
-    <div class="max-w-md flex flex-col w-full bg-white shadow-md px-6 pt-6">
+    <div class="bg-slate-100 max-w-md flex flex-col w-full shadow-md px-6 pt-6">
         <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Resultats</h1>
         <h2 class="text-lg font-semibold mb-4">{{vote.title}}</h2>
         <h2 class="text-lg font-semibold mb-4">date: {{vote.session.date}}</h2>
@@ -15,16 +15,16 @@
     </div>
 
     {% if vote.max_num_choices == 1%}
-        <div class="max-w-md w-full bg-white shadow-md p-6">
+        <div class="max-w-md w-full shadow-md p-6">
             <canvas id="myChart"></canvas>
         </div>
     {% else %}
-        <div class="max-w-md w-full bg-white shadow-md p-6">
+        <div class="max-w-md w-full shadow-md p-6">
             <canvas id="myChart"></canvas>
         </div>
     {% endif %}
 
-    <div class="flex flex-col max-w-md w-full bg-white shadow-md p-6">
+    <div class="bg-slate-100 flex flex-col max-w-md w-full shadow-md p-6">
         <div class="flex flex-col">
             {% for option in options %}
                 <div class="flex flex-row justify-between items-center py-2 px-4 border-b">
@@ -34,7 +34,9 @@
             {% endfor %}
     </div>
 
-    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-blue-600">Retour</a>
+    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+      Retour
+    </a>
 
 </div>
 

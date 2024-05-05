@@ -114,17 +114,19 @@
 <body class="font-open-sans min-h-screen flex flex-col bg-slate-50" style="height: 100vh;">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
-    <div class="bg-slate-50 p-4 text-lg  px-16">
+    <div class="bg-slate-50 p-4 text-lg px-16">
         <div class="w-full py-2 flex justify-between items-center">
             <!-- Left-aligned div -->
+            {% if request.session.token %}
             <div class="flex items-center space-x-4 mb-2 md:mb-0 justify-start">
-                <a href="{% url 'logout' %}" class="text-white> text-2xl font-bold">Se deconnecter</a>
+                <a href="{% url 'logout' %}" class="text-white> text-xl font-bold">Se deconnecter</a>
             </div>
+            {% endif %}
         
             <!-- Center-aligned div -->
             <div class="mx-auto flex-grow flex items-center justify-center mb-2 md:mb-0">
                 {% if request.session.token %}
-                    <h1 class="text-2xl font-bold">ESN ULB Brussels - Vote active</h1>
+                    <h1 class="text-2xl font-bold">ESN ULB Brussels - Vote</h1>
                 {% else %}
                     <h1 class="text-2xl font-bold">ESN ULB Brussels</h1>
                 {% endif %}

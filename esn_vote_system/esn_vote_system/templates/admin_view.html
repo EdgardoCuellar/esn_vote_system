@@ -2,24 +2,26 @@
 
 {% block content %}
 
-<div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8">
+<div class="flex flex-col items-center px-6 lg:px-8">
 
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6">
-        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Admin view</h1>
-        <a href="{% url 'generate_token' %}" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Generate Token</a>
-        <a href="{% url 'create_vote' %}" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Create Vote</a>
-    </div>
+    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6">
+        <h1 class="flex flex-row justify-between text-2xl font-bold mb-4">ESN ULB Brussels - Admin</h1>
+        <div class="flex flex-row justify-between space-x-4  mb-6">
+            <a href="{% url 'generate_token' %}" class="w-full text-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition-colors duration-300 ease-in-out">Generate a key</a>
+            <a href="{% url 'create_vote' %}" class="w-full text-center bg-orange-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:bg-orange-600 transition-colors duration-300 ease-in-out">Create a vote</a>
+        </div>
 
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6 mt-4">
-        <h2 class="text-lg font-semibold mb-4">Votes</h2>
-        <div class="flex flex-col">
+        <hr>
+
+        <h2 class="text-lg font-semibold mb-4 mt-6">Votes de la session: {{session}}</h2>
+        <div class="flex flex-col space-y-2">
             {% for vote in votes %}
             {% if vote.vote_opened %} 
             <a href="{% url  'vote_results' vote.id %}"
-                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	 flex flex-row justify-between items-center py-2 px-4 border-b">
+                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	rounded-md flex flex-row justify-between items-center py-2 px-4 border-b">
             {% else %} 
             <a href="{% url 'vote_update' vote.id %}"
-                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	 flex flex-row justify-between items-center py-2 px-4 border-b">
+                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	rounded-md flex flex-row justify-between items-center py-2 px-4 border-b">
             {% endif %} 
                     <span>{{ vote.session.title }}</span>
                     <span>{{ vote.title }}</span>

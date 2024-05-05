@@ -5,19 +5,22 @@
 {% block content %}
 <div class="w-full bg-slate-50">
 
-  <div class="max-w-md mx-auto my-8 p-6 bg-white rounded-md shadow-md">
-    <h2 class="text-2xl font-semibold mb-6">Login admin</h2>
+  <div class="flex flex-col max-w-md mx-auto my-8 p-6 bg-slate-100 rounded-md shadow-md">
+    <h2 class="text-2xl font-semibold mb-6">Connection admin</h2>
     <form action="{% url 'login_admin' %}" method="post" class="flex flex-col space-y-4">
       {% csrf_token %}
       {% if error %}
         <div class="text-red-500">{{ error }}</div>
       {% endif %}
       <div class="flex flex-col">
-        <label for="token" class="mb-1">Token Admin</label>
-        <input required type="token" name="token" class="px-4 py-2 border rounded-md" placeholder="***token***" id="token">
+        <label for="token" class="mb-1">Clé admin</label>
+        <input required type="token" name="token" class="px-4 py-2 border rounded-md" placeholder="************" id="token">
       </div>
       <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Se connecter</button>
     </form>
+
+    
+    <a href="{% url '' %}" class="text-blue-500 mt-4">Connexion simple</a>
   </div>
 
 </div>

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex min-h-full justify-center items-center px-6 lg:px-8">
+<div class="flex justify-center px-6 lg:px-8">
 
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6">
+    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6">
         <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Admin</h1>
         <h2 class="text-lg font-semibold mb-4">Generate Token</h2>
 
@@ -15,7 +15,7 @@
                 {% endfor %}
             </select>
             <input type="text" name="key_token" class="w-full border-gray-300 rounded-md px-4 py-2 mb-2 focus:outline-none focus:border-blue-500" placeholder="Enter Key" required>
-            <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Generate Token</button>
+            <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Generate a key</button>
         </form>
 
         {% if error %}
@@ -23,9 +23,13 @@
         {% endif %}
 
         {% if token %}
-            <p class="text-green-500 mb-4">Generated Token: </p>
-            <p class="text-green-500 mb-4 text-2xl">{{ token }}</p>
+            <p class="text-green-600 mb-4">Generated key: </p>
+            <p class="text-green-600 mb-8 text-2xl">{{ token }}</p>
         {% endif %}
+
+        <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+            Retour
+        </a>
     </div>
 
 </div>

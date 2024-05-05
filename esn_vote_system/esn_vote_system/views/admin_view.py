@@ -10,7 +10,7 @@ class AdminView(View):
         if not request.session.get('admin_token'):
             return redirect('login_admin')
         
-        sessions = VoteSession.get_open_vote_sessions()
+        session = VoteSession.get_open_vote_sessions()[0]
         votes = Vote.objects.all()
 
-        return render(request, 'admin_view.html', {'sessions': sessions, 'votes': votes})
+        return render(request, 'admin_view.html', {'session': session, 'votes': votes})

@@ -6,8 +6,8 @@
 
 {% load custom_filter %}
 
-<div class="sm:w-full md:w-96 mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Create a New Vote</h2>
+<div class="sm:w-full md:w-96 mx-auto pb-8">
+    <h2 class="text-2xl font-bold mb-4">Create a new vote</h2>
     <form action="{% url 'create_vote' %}" method="post" class="pb-8">
         {% csrf_token %}
         <div class="mb-4">
@@ -36,7 +36,7 @@
         </div>
 
         <div id="options-container" class="flex flex-col space-y-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Options</label>
+            <label class="block text-gray-700 text-sm font-bold">Options</label>
             <div class="flex items-center space-x-4 mb-2" id="option-1">
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
                     value="{{ vote.id|get_first_vote_option_by_vote_id }}" name="option_text" type="text" placeholder="Enter option" required>
@@ -57,12 +57,17 @@
             {% endif %}
         </div>
 
-        <div class="flex flex-col space-y-4 mt-4">
-            <button type="button" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" onclick="addOption()">Add Option</button>
+        <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" onclick="addOption()">+</button>
+            
+        <div class="flex flex-col space-y-2 mt-6">
             <button type="submit" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75">Update Vote</button>
-            <a href="{% url 'publish_vote' vote.id %}" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Publish</a>
+            <a href="{% url 'publish_vote' vote.id %}" class="px-4 py-2 bg-pink-500 text-white text-center font-semibold rounded-lg shadow-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-75">Publish</a>
         </div>
     </form>
+
+    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+        Retour
+    </a>
 </div>
 
 <script>

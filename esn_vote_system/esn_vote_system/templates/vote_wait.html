@@ -1,24 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8">
 
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6">
-        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Waiting room</h1>
+{% load custom_filter %}
+
+<div class="flex flex-col items-center px-6 lg:px-8">
+
+    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6">
+        <h1 class="text-2xl font-bold mb-4">Session de vote ouverte</h1>
         <h2 class="text-lg font-semibold mb-4">{{session.title}}</h2>
-        <h2 class="text-lg font-semibold mb-4">date: {{session.date}}</h2>
+        <h2 class="text-lg font-semibold mb-4">Date: {{session.date|date_format_fr}}</h2>
         <span class="text-lg font-semibold mb-4">{{session.description}}</span>
     </div>
 
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-6 mt-4">
-        <h2 class="text-lg font-semibold mb-4">Votes</h2>
-        <div class="flex flex-col">
+    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6 mt-4">
+        <h2 title="Les votes vont apparaitre ici lorsqu'ils seront publiés" class="text-lg font-semibold mb-4">Les votes:</h2>
+        <div class="flex flex-col space-y-2">
             {% for vote in votes %}
-            <a href="{% url 'vote' vote.id %}"
-                class="bg-blue-500 text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
+            {% if vote.id|get_vote_token_used_by_token_and_vote_id:token %}
+            <div
+                class="bg-green-500 rounded-md text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
                 <span>{{ vote.title }}</span>
-                <span>{{ vote.date }}</span>
+                <span></span>
+            </div>
+            {% else %}
+            <a href="{% url 'vote' vote.id %}"
+                class="bg-blue-500 rounded-md text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
+                <span>{{ vote.title }}</span>
+                <span>Voter</span>
             </a>
+            {% endif %}
             {% endfor %}
         </div>
     </div>

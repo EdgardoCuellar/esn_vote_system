@@ -22,9 +22,9 @@ class GenerateToken(View):
         
         if session_id and Token.check_key(key_token):
             token = Token.create_register_token(session_id)
-            return render (request, self.html_link, {'token': token})
+            return render (request, self.html_link, {'token': token, 'sessions': VoteSession.get_open_vote_sessions()})
 
         error_message = 'Clé invalide !'
 
-        return render (request, self.html_link, {'error': error_message})
+        return render (request, self.html_link, {'error': error_message, 'sessions': VoteSession.get_open_vote_sessions()})
     

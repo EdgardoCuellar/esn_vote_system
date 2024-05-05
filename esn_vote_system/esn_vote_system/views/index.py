@@ -13,7 +13,7 @@ class IndexView(View):
             # create a request.session['token'] = request.POST.get('token')
             request.session['token'] = request.POST.get('token')
             return redirect('vote_wait', session_id=session_id)
-        return render(request, 'index.html', {'error': 'Token invalid'})
+        return render(request, 'index.html', {'error': 'Clé invalide'})
 
 def logout(request):
     request.session['token'] = None

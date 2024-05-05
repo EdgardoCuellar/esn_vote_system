@@ -10,16 +10,20 @@ class VoteView(View):
         if VoteTokenUsed.does_token_vote_exist(request.session.get('token'), vote_id):
             return redirect('vote_wait', session_id=Vote.objects.get(id=vote_id).session_id)
         vote = Vote.objects.get(id=vote_id)
+        if vote.vote_opened == False:
+            return redirect('vote_wait', session_id=vote.session_id)
         return render(request, 'vote.html', {'vote': vote})
 
     def post(self, request, vote_id):
         if not request.session.get('token'):
             return redirect('index')
-            
         if VoteTokenUsed.does_token_vote_exist(request.session.get('token'), vote_id):
             return redirect('vote_wait', session_id=Vote.objects.get(id=vote_id).session_id)
         
         vote = Vote.objects.get(id=vote_id)
+
+        if vote.vote_opened == False:
+            return redirect('vote_wait', session_id=vote.session_id)
         
         token_str = request.session.get('token')
         token = Token.get_token_by_token(token_str)

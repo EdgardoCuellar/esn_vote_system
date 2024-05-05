@@ -115,10 +115,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
     <div class="bg-slate-50 p-4 text-lg px-16">
-        <div class="w-full py-2 flex justify-between items-center">
+        <div class="w-full py-2 flex flex-row">
             <!-- Left-aligned div -->
-            {% if request.session.token %}
-            <div class="flex items-center space-x-4 mb-2 md:mb-0 justify-start">
+            {% if request.session.token or request.session.admin_token %}
+            <div class="absolute flex items-center space-x-4 mb-2 md:mb-0 justify-start">
                 <a href="{% url 'logout' %}" class="text-white> text-xl font-bold">Se deconnecter</a>
             </div>
             {% endif %}

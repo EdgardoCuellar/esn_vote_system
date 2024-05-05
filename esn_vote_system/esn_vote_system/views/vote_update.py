@@ -5,11 +5,15 @@ from esn_vote_system.models.vote_session import VoteSession
 
 class VoteUpdateView(View):
     def get(self, request, vote_id):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         vote = get_object_or_404(Vote, pk=vote_id)
         sessions = VoteSession.get_open_vote_sessions()
         return render(request, 'update_vote.html', {'vote': vote, 'sessions': sessions, 'options': vote.options.all()})
 
     def post(self, request, vote_id):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         vote = get_object_or_404(Vote, pk=vote_id)
         vote.title = request.POST.get('title')
         vote.description = request.POST.get('description')

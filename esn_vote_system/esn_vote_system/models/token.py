@@ -1,7 +1,9 @@
 from django.db import models
+from esn_vote_system.models.admin_key import AdminKey
 from esn_vote_system.models.vote_session import VoteSession
 import secrets
 import string
+
 
 class Token(models.Model):
     id = models.AutoField(primary_key=True)
@@ -14,11 +16,7 @@ class Token(models.Model):
 
     @staticmethod
     def check_key(check_key):
-        key_file_path = './private/register_token.txt'
-        key = ""
-        with open(key_file_path, 'r') as f:
-            key = f.read()
-
+        key = AdminKey.get_key()
         return key.strip() == check_key.strip()
     
     @staticmethod

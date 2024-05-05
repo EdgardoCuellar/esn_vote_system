@@ -6,10 +6,14 @@ from esn_vote_system.models.vote_session import VoteSession
 
 class CreateVoteView(View):
     def get(self, request):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         sessions = VoteSession.get_open_vote_sessions()
         return render(request, 'create_vote.html', {'sessions': sessions})
 
     def post(self, request):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         title = request.POST.get('title')
         description = request.POST.get('description')
         max_num_choices = request.POST.get('max_num_choices')

@@ -11,10 +11,14 @@ class GenerateToken(View):
     html_link = 'generate_token.html'
 
     def get(self, request):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         sessions = VoteSession.get_open_vote_sessions()
         return render (request, self.html_link, {'sessions': sessions})
 
     def post(self, request):
+        if not request.session.get('admin_token'):
+            return redirect('login_admin')
         key_token = request.POST.get ('key_token')
         session_id = request.POST.get ('session_id')
         

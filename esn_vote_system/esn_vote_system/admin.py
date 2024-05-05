@@ -6,6 +6,7 @@ from django.conf import settings
 from esn_vote_system.models.vote import VoteOption, Vote, VoteTokenUsed
 from esn_vote_system.models.token import Token
 from esn_vote_system.models.vote_session import VoteSession
+from esn_vote_system.models.admin_key import AdminKey
 
 
 admin.site.register(VoteOption)
@@ -13,3 +14,4 @@ admin.site.register(Vote)
 admin.site.register(Token)
 admin.site.register(VoteSession)
 admin.site.register(VoteTokenUsed)
+admin.site.register(AdminKey)

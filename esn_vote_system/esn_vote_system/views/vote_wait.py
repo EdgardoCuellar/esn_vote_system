@@ -7,6 +7,8 @@ from esn_vote_system.models.vote import Vote, VoteOption
 class VoteWaitView(View):
 
     def get(self, request, session_id):
+        if not request.session.get('token'):
+            return redirect('index')
         session = VoteSession.get_vote_session_by_id(session_id)
         votes = Vote.get_vote_opened_by_open_vote_session(session_id)
         token = request.session.get('token')

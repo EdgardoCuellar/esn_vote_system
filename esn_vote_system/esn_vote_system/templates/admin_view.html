@@ -16,18 +16,23 @@
         <h2 class="text-lg font-semibold mb-4 mt-6">Votes de la session: {{session}}</h2>
         <div class="flex flex-col space-y-2">
             {% for vote in votes %}
-            {% if vote.vote_opened %} 
-            <a href="{% url  'vote_results' vote.id %}"
-                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	rounded-md flex flex-row justify-between items-center py-2 px-4 border-b">
-            {% else %} 
-            <a href="{% url 'vote_update' vote.id %}"
-                class="{% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %} text-slate-50	rounded-md flex flex-row justify-between items-center py-2 px-4 border-b">
-            {% endif %} 
-                    <span>{{ vote.session.title }}</span>
-                    <span>{{ vote.title }}</span>
-                    <span>{{ vote.date }}</span>
-                    <span>{% if vote.vote_opened %} Resultat {% else %} Modifier {% endif %}</span>
-                </a>
+                <div class="w-full flex flex-row rounded-lg justify-between {% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %}">
+                    {% if vote.vote_opened %} 
+                    <a href="{% url  'vote_results' vote.id %}"
+                        class="w-full text-slate-50 flex flex-row justify-between items-center py-2 px-4">
+                    {% else %} 
+                    <a href="{% url 'vote_update' vote.id %}"
+                        class="w-full text-slate-50 flex flex-row justify-between items-center py-2 px-4">
+                    {% endif %} 
+                            <span>{{ vote.title }}</span>
+                            <span>{% if vote.vote_opened %} Resultat {% else %} Modifier {% endif %}</span>
+                    </a>
+                    {% if not vote.vote_opened %} 
+                    <a href="{% url 'publish_vote' vote.id %}" class="py-2 px-4 text-white bg-pink-500 rounded-r-lg">
+                        {% if not vote.vote_opened %} Publier {% endif %}
+                    </a>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>   
     </div>

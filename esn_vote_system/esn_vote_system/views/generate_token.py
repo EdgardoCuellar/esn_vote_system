@@ -19,12 +19,11 @@ class GenerateToken(View):
     def post(self, request):
         if not request.session.get('admin_token'):
             return redirect('login_admin')
-        key_token = request.POST.get ('key_token')
         session_id = request.POST.get ('session_id')
         
         error_message = None
         
-        if session_id and Token.check_key(key_token):
+        if session_id:
             token = Token.create_register_token(session_id)
             return render (request, self.html_link, {'token': token, 'sessions': VoteSession.get_open_vote_sessions()})
 

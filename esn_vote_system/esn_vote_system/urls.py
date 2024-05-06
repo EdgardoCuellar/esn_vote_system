@@ -12,7 +12,7 @@ from esn_vote_system.views.vote_wait import VoteWaitView
 from esn_vote_system.views.create_vote import CreateVoteView
 from esn_vote_system.views.login_admin import LoginAdminView
 from esn_vote_system.views.admin_view import AdminView
-from esn_vote_system.views.vote_update import VoteUpdateView, publish_vote
+from esn_vote_system.views.vote_update import VoteUpdateView, publish_vote, delete_vote
 from esn_vote_system.views.vote_results import VoteResultsView
 from esn_vote_system.views.vote import VoteView
 
@@ -31,5 +31,6 @@ urlpatterns = [
     path('publish_vote/<int:vote_id>/', publish_vote, name='publish_vote'),
     path('vote_results/<int:vote_id>/', VoteResultsView.as_view(), name='vote_results'),
     path('vote/<int:vote_id>/', VoteView.as_view(), name='vote'),
+    path('delete_vote/<int:vote_id>/', delete_vote, name='delete_vote'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

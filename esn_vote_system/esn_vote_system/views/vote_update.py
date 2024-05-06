@@ -25,10 +25,21 @@ class VoteUpdateView(View):
             option.option_text = option_texts.pop(0)
             option.save()
 
-        return redirect('admin_view')  # Replace 'vote_list' with the actual name of your URL pattern
+        return redirect('admin_view')  
 
 def publish_vote(request, vote_id):
+    if not request.session.get('admin_token'):
+        return redirect('login_admin')
     vote = get_object_or_404(Vote, pk=vote_id)
     vote.vote_opened = True
     vote.save()
-    return redirect('admin_view')  # Replace 'vote_list' with the actual name of your URL pattern
+    return redirect('admin_view') 
+
+def delete_vote(request, vote_id):
+    if not request.session.get('admin_token'):
+        return redirect('login_admin')
+    vote = get_object_or_404(Vote, pk=vote_id)
+    if vote.vote_opened:
+        return redirect('admin_view')
+    vote.delete()
+    return redirect('admin_view')

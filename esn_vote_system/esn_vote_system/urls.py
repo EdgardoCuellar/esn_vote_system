@@ -1,6 +1,3 @@
-# URL configuration for Rentizy project.
-
-# Import necessary modules
 from django.contrib import admin
 from django.urls import path
 from django.views.static import serve

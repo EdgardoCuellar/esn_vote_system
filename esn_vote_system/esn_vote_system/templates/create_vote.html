@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="sm:w-full md:w-96 bg-slate-100 px-6 pt-6 mx-auto pb-8">
+<div class="sm:w-full md:w-96 bg-zinc-50 px-6 pt-6 mx-auto pb-8">
     <h2 class="text-2xl font-bold mb-4">Create a new vote</h2>
     <form action="{% url 'create_vote' %}" method="post" class="pb-8 flex flex-col">
         {% csrf_token %}

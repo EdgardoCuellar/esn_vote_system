@@ -8,7 +8,7 @@
 
 <div class="sm:w-full md:w-96 mx-auto pb-8">
     <h2 class="text-2xl font-bold mb-4">Créer un nouveau vote</h2>
-    <form action="{% url 'create_vote' %}" method="post" class="pb-8">
+    <form action="{% url 'vote_update' vote.id %}" method="post" class="pb-8">
         {% csrf_token %}
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Titre</label>

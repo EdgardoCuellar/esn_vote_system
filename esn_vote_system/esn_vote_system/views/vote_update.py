@@ -16,21 +16,33 @@ class VoteUpdateView(View):
         if not request.session.get('admin_token'):
             return redirect('login_admin')
         vote = get_object_or_404(Vote, pk=vote_id)
-        vote.title = request.POST.get('title')
-        vote.description = request.POST.get('description')
-        vote.max_num_choices = request.POST.get('max_num_choices')
-        vote.save()
+        vote.delete()
+
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        max_num_choices = request.POST.get('max_num_choices')
+        session_id = request.POST.get('session_id')
+
+        vote = Vote.objects.create(title=title, description=description, max_num_choices=max_num_choices, session_id=session_id)
 
         option_texts = request.POST.getlist('option_text')
-        for option in vote.options.all():
-            option.option_text = option_texts.pop(0)
-            option.save()
-
-        return redirect('admin_view')  # Replace 'vote_list' with the actual name of your URL pattern
+        for option_text in option_texts:
+            VoteOption.objects.create(vote=vote, option_text=option_text)
 
 def publish_vote(request, vote_id):
+    if not request.session.get('admin_token'):
+        return redirect('login_admin')
     vote = get_object_or_404(Vote, pk=vote_id)
     vote.vote_opened = True
     vote.save()
     vote.datetime_vote_opened = datetime.datetime.now()
     return redirect('admin_view')  # Replace 'vote_list' with the actual name of your URL pattern
+
+def delete_vote(request, vote_id):
+    if not request.session.get('admin_token'):
+        return redirect('login_admin')
+    vote = get_object_or_404(Vote, pk=vote_id)
+    if vote.vote_opened:
+        return redirect('admin_view')
+    vote.delete()
+    return redirect('admin_view')

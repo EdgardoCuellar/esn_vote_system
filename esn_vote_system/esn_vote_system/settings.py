@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'edgardo610.pythonanywhere.com',
+    'esnulbbrussels.pythonanywhere.com'
 ]
 
 

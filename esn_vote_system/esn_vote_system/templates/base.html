@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Rentizy{% endblock %}</title>
+    <title>{% block title %}ESN ULB Brussels - Vote{% endblock %}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
-    <link rel="shortcut icon" type="image/png" href="/media/site_images/favicon.png" >
+    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/KhxD0v7/favicon.png" >
     {% load custom_filter %}
 
     <!-- My custom fonts classes -->
@@ -40,82 +40,15 @@
     </style>
 
     <style>
-        .btn-cyan {
-            background-color: #7ED3E6;
-            color: #fafafa;
-            font-weight: 600;
-        }
 
-        .btn-cyan:hover {
-            background-color: #62a1af;
-            color: #ffffff;
-        }
-
-        .a-cyan {
-            color: #7ED3E6;
-        }
-
-        .a-cyan:hover {
-            color: #62a1af;
-        }
-
-        .btn-retour {
-            background-color: #FD8A8A;
-            color: #fafafa;
-            font-weight: 600;
-        }
-
-        .btn-retour:hover {
-            background-color: #e06b6b;
-            color: #ffffff;
-        }
-
-        .btn-purple {
-            background-color: #c3c0e6;
-            color: #fafafa;
-        }
-
-        .btn-purple:hover {
-            background-color: #a8a5d4;
-            color: #ffffff;
-        }
-
-        .btn-green {
-            background-color: #a8e6b8;
-            color: #fafafa;
-        }
-
-        .btn-green:hover {
-            background-color: #8fcf9a;
-            color: #ffffff;
-        }
-
-        .btn-pink {
-            background-color: #FFCBCB;
-        }
-
-        .btn-pink:hover {
-            background-color: #f5b1b1;
-        }
-
-        .btn-orange {
-            background-color: #f5c28e;
-            color: #fafafa;
-        }
-
-        .btn-orange:hover {
-            background-color: #e0a76b;
-            color: #ffffff;
-        }
-        
     </style>
 
 </head>
 <body class="font-open-sans min-h-screen flex flex-col bg-slate-50" style="height: 100vh;">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
-    <div class="bg-slate-50 p-4 text-lg px-16">
-        <div class="w-full py-2 flex flex-col md:flex-row"> <!-- Modified here -->
+    <div class="bg-slate-50 pt-6 text-lg px-16">
+        <div class="w-full flex flex-col md:flex-row"> <!-- Modified here -->
             <!-- Left-aligned div -->
             {% if request.session.token or request.session.admin_token %}
             <div class="md:absolute sm:relative flex items-center space-x-4 mb-2 md:mb-0 justify-start">
@@ -124,12 +57,8 @@
             {% endif %}
         
             <!-- Center-aligned div -->
-            <div class="md:mx-auto md:flex-grow flex items-center justify-center mb-2 md:mb-0"> <!-- Modified here -->
-                {% if request.session.token %}
-                    <h1 class="text-2xl font-bold">ESN ULB Brussels - Vote</h1>
-                {% else %}
-                    <h1 class="text-2xl font-bold">ESN ULB Brussels</h1>
-                {% endif %}
+            <div class="w-40 md:mx-auto flex items-center justify-center md:mb-0"> <!-- Modified here -->
+                <img src="https://i.ibb.co/QngJjCb/LOGO-NOIR-COULEUR.png" alt="ESN ULB Brussels" class="object-scale-down">
             </div>
     
         </div>        

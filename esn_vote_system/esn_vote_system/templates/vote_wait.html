@@ -6,14 +6,14 @@
 
 <div class="flex flex-col items-center px-6 lg:px-8">
 
-    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6">
+    <div class="max-w-md w-full bg-zinc-50 shadow-md rounded-md p-6">
         <h1 class="text-2xl font-bold mb-4">Session de vote ouverte</h1>
         <h2 class="text-lg font-semibold mb-4">{{session.title}}</h2>
         <h2 class="text-lg font-semibold mb-4">Date: {{session.date|date_format_fr}}</h2>
         <span class="text-lg font-semibold mb-4">{{session.description}}</span>
     </div>
 
-    <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6 mt-4">
+    <div class="max-w-md w-full bg-zinc-50 shadow-md rounded-md p-6 mt-4">
         <h2 title="Les votes vont apparaitre ici lorsqu'ils seront publiés" class="text-lg font-semibold mb-4">Les votes:</h2>
         <div class="flex flex-col space-y-2">
             {% for vote in votes %}

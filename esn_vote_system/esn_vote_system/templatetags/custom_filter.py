@@ -42,3 +42,14 @@ def get_number_of_votes(vote_id):
 def date_format_fr(value):
     translation.activate('fr')
     return date_format(value, "l, j F Y", use_l10n=True)
+
+@register.filter
+def get_number_of_votes(vote_id):
+    return Vote.get_number_of_votes(vote_id)
+
+@register.filter
+def is_number_of_votes_gre_than_number_of_participants(vote_id):
+    nb = Vote.get_number_of_votes(vote_id)
+    nb_participants = VoteSession.get_active_session().number_of_participants
+    print(nb, nb_participants)
+    return nb >= nb_participants

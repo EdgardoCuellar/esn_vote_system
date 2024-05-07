@@ -7,6 +7,7 @@ class VoteSession(models.Model):
     description = models.TextField()
     date = models.DateTimeField(default='', blank=True, null=True)
     is_closed = models.BooleanField(default=False)
+    number_of_participants = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

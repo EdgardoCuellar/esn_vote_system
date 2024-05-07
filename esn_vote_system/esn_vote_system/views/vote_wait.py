@@ -10,6 +10,6 @@ class VoteWaitView(View):
         if not request.session.get('token'):
             return redirect('index')
         session = VoteSession.get_vote_session_by_id(session_id)
-        votes = Vote.get_vote_opened_by_open_vote_session(session_id)
+        votes = Vote.get_vote_opened_by_open_vote_session_sorted(session_id)
         token = request.session.get('token')
         return render(request, 'vote_wait.html', {'session': session, 'votes': votes, 'token': token})

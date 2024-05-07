@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% load custom_filter %}
+
 <div class="flex flex-col items-center px-6 lg:px-8">
 
     <div class="max-w-md w-full bg-slate-100 shadow-md rounded-md p-6">
@@ -18,14 +20,30 @@
             {% for vote in votes %}
                 <div class="w-full flex flex-row rounded-lg justify-between {% if vote.vote_opened %} bg-blue-500 {% else %} bg-orange-500 {% endif %}">
                     {% if vote.vote_opened %} 
-                    <a href="{% url  'vote_results' vote.id %}"
-                        class="w-full text-slate-50 flex flex-row justify-between items-center py-2 px-4">
-                    {% else %} 
+
+                    {% if vote.id|is_number_of_votes_gre_than_number_of_participants  %}
+                        <a href="{% url 'vote_results' vote.id %}"
+                            class="w-full text-slate-50 flex flex-row justify-between items-center py-2 px-4">
+                    {% else %}
+                        <a href="#"
+                            class="w-full text-red-200 flex flex-row justify-between items-center py-2 px-4">
+                    {% endif %}
+                    
+                    {% else %}
                     <a href="{% url 'vote_update' vote.id %}"
                         class="w-full text-slate-50 flex flex-row justify-between items-center py-2 px-4">
                     {% endif %} 
-                            <span>{{ vote.title }}</span>
-                            <span>{% if vote.vote_opened %} Resultat {% else %} Modifier {% endif %}</span>
+                        <span>{{ vote.title }}</span>
+                        <div class="flex flex-row space-x-4">
+                            <span><b>Votes: {{ vote.id|get_number_of_votes }}</b></span>
+                            <span>
+                            {% if vote.vote_opened %} 
+                                Resultat
+                            {% else %}
+                                Modifier
+                            {% endif %}
+                            </span>
+                        </div>
                     </a>
                     {% if not vote.vote_opened %} 
                     <a href="{% url 'publish_vote' vote.id %}" class="py-2 px-4 text-white bg-pink-500 rounded-r-lg">

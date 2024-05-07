@@ -10,6 +10,7 @@ class Vote(models.Model):
     session = models.ForeignKey(VoteSession, on_delete=models.CASCADE)
     max_num_choices = models.IntegerField(default=1)
     vote_opened = models.BooleanField(default=False)
+    datetime_vote_opened = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -22,6 +23,9 @@ class Vote(models.Model):
     
     def get_vote_opened_by_open_vote_session(self):
         return Vote.objects.filter(session__is_closed=False, vote_opened=True)
+    
+    def get_vote_opened_by_open_vote_session_sorted(self):
+        return Vote.objects.filter(session__is_closed=False, vote_opened=True).order_by('datetime_vote_opened')
     
     @staticmethod
     def get_number_of_votes(vote_id):

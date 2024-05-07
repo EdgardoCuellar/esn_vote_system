@@ -35,7 +35,11 @@
                     {% endif %} 
                         <span>{{ vote.title }}</span>
                         <div class="flex flex-row space-x-4">
-                            <span><b>Votes: {{ vote.id|get_number_of_votes }}</b></span>
+                            {% if vote.vote_opened %} 
+                                <span><b>
+                                    Votes: {{ vote.id|get_number_of_votes }}
+                                </b></span>
+                            {% endif %}
                             <span>
                             {% if vote.vote_opened %} 
                                 Resultat

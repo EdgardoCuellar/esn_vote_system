@@ -18,15 +18,15 @@ class Vote(models.Model):
     def get_options(self):
         return self.options.all()
     
-     @staticmethod
+    @staticmethod
     def get_vote_by_open_vote_session():
         return Vote.objects.filter(session__is_closed=False)
     
-     @staticmethod
+    @staticmethod
     def get_vote_opened_by_open_vote_session():
         return Vote.objects.filter(session__is_closed=False, vote_opened=True)
     
-     @staticmethod
+    @staticmethod
     def get_vote_opened_by_open_vote_session_sorted():
         return Vote.objects.filter(session__is_closed=False, vote_opened=True).order_by('datetime_vote_opened')
     

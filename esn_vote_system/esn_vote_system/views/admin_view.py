@@ -11,6 +11,6 @@ class AdminView(View):
             return redirect('login_admin')
         
         session = VoteSession.get_active_session()
-        votes = Vote.objects.all()
+        votes = Vote.get_vote_by_open_vote_session()
 
         return render(request, 'admin_view.html', {'session': session, 'votes': votes})

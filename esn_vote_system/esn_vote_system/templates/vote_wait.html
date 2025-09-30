@@ -1,38 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 {% load custom_filter %}
 
 <div class="flex flex-col items-center px-6 lg:px-8">
+  <div class="max-w-md w-full glass-card p-6 md:p-8">
+    <h1 class="text-2xl font-title font-bold mb-4 text-slate-800">Voting Session Open</h1>
+    <h2 class="text-lg font-semibold mb-4 text-slate-700">{{ session.title }}</h2>
+    <h2 class="text-sm font-medium mb-4 text-slate-600">Date: {{ session.date|date_format_fr }}</h2>
+    <p class="text-sm text-slate-600">{{ session.description }}</p>
+  </div>
 
-    <div class="max-w-md w-full bg-zinc-50 shadow-md rounded-md p-6">
-        <h1 class="text-2xl font-bold mb-4">Session de vote ouverte</h1>
-        <h2 class="text-lg font-semibold mb-4">{{session.title}}</h2>
-        <h2 class="text-lg font-semibold mb-4">Date: {{session.date|date_format_fr}}</h2>
-        <span class="text-lg font-semibold mb-4">{{session.description}}</span>
-    </div>
-
-    <div class="max-w-md w-full bg-zinc-50 shadow-md rounded-md p-6 mt-4">
-        <h2 title="Les votes vont apparaitre ici lorsqu'ils seront publiés" class="text-lg font-semibold mb-4">Les votes:</h2>
-        <div class="flex flex-col space-y-2">
-            {% for vote in votes %}
-            {% if vote.id|get_vote_token_used_by_token_and_vote_id:token %}
-            <div
-                class="bg-green-500 rounded-md text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
-                <span>{{ vote.title }}</span>
-                <span></span>
-            </div>
-            {% else %}
-            <a href="{% url 'vote' vote.id %}"
-                class="bg-blue-500 rounded-md text-slate-50 flex flex-row justify-between items-center py-2 px-4 border-b">
-                <span>{{ vote.title }}</span>
-                <span>Voter</span>
-            </a>
-            {% endif %}
-            {% endfor %}
+  <div class="max-w-md w-full glass-card p-6 md:p-8 mt-4">
+    <h2 title="Votes will appear here when published" class="text-lg font-semibold mb-4 text-slate-700">Votes:</h2>
+    <div class="flex flex-col space-y-2">
+      {% for vote in votes %}
+        {% if vote.id|get_vote_token_used_by_token_and_vote_id:token %}
+        <div class="glass-card rounded-2xl flex flex-row justify-between items-center py-2 px-4" style="background-image: linear-gradient(90deg, rgba(98, 183, 33, 0.95), rgba(88, 146, 37, 0.92));">
+          <span class="text-white">{{ vote.title }}</span>
+          <span class="text-white">Completed</span>
         </div>
+        {% else %}
+        <a href="{% url 'vote' vote.id %}" class="glass-btn flex rounded-2xl flex-row justify-between items-center py-2 px-4" style="background-image: linear-gradient(90deg, rgba(5, 137, 186, 0.95), rgba(8, 173, 218, 0.92));">
+          <span class="text-white">{{ vote.title }}</span>
+          <span class="text-white">Vote</span>
+        </a>
+        {% endif %}
+      {% endfor %}
     </div>
-
+  </div>
 </div>
 {% endblock %}

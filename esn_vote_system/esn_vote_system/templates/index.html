@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
-
 {% block title %}ESN ULB Brussels - index{% endblock %}
 
 {% block content %}
-<div class="w-full bg-slate-50">
+<div class="max-w-lg mx-auto my-6">
+  <!-- Center panel: glass card -->
+  <div class="glass-card p-6 md:p-8">
+    <h2 class="text-2xl font-title font-semibold mb-3 text-slate-800">Vote system connection</h2>
 
-  <div class=" flex flex-col max-w-md mx-auto my-6 p-6 bg-zinc-50 rounded-md shadow-md">
-    <h2 class="text-2xl font-semibold mb-2">Connexion au système de vote</h2>
-    <form action="{% url 'index' %}" method="post" class="flex flex-col space-y-4">
+    <p class="text-sm text-slate-600 mb-4">Enter your unique private key to access the vote. Be careful not to share this key.</p>
+
+    <form action="{% url 'index' %}" method="post" class="flex flex-col gap-4">
       {% csrf_token %}
       {% if error %}
-        <div class="text-red-500">{{ error }}</div>
-      {% endif %}
-      <div class="flex flex-col">
-        <label for="token" class="mb-1">Introduisez votre clé privée unique.</label>
-        <input required type="token" name="token" class="px-4 py-2 border rounded-md" placeholder="***clé***" id="token">
+      <div class="text-red-600 bg-red-50 p-3 rounded-md text-sm border border-red-100">
+        {{ error }}
       </div>
-      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Se connecter</button>
+      {% endif %}
+
+      <div class="flex flex-col">
+        <label for="token" class="mb-2 text-sm font-medium text-slate-700">Private key</label>
+        <input required type="token" name="token" id="token"
+               class="glass-input focus-ring px-4 py-3 rounded-lg text-slate-800 placeholder:text-slate-400 transition-shadow"
+               placeholder="*** key ***" autocomplete="off" inputmode="text">
+      </div>
+
+      <button type="submit" class="glass-btn px-4 py-3 rounded-lg text-base"
+              style="background-image: linear-gradient(90deg, rgba(0, 163, 223, 0.95), rgba(0,174,239,0.92));">
+        Log in
+      </button>
     </form>
 
-    <a href="{% url 'login_admin' %}" class="text-blue-500 mt-4">Connexion Admin</a>
+    <div class="mt-4 text-center">
+      <a href="{% url 'login_admin' %}" class="inline-block text-sm font-medium text-slate-700 hover:text-slate-900">Admin Login</a>
+    </div>
   </div>
-
 </div>
-
 {% endblock %}

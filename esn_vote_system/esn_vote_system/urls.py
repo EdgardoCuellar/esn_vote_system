@@ -30,4 +30,6 @@ urlpatterns = [
     path('vote/<int:vote_id>/', VoteView.as_view(), name='vote'),
     path('delete_vote/<int:vote_id>/', delete_vote, name='delete_vote'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

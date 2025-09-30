@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_9)&pl$s-(z!jo=dfs0_29_i_ktrkdfeu_gj+v08!=ppwk1qwp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -126,7 +126,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'   # <- important que ça commence et finisse par /
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # ← ton dossier "static" si tu en as un
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"  # pour collectstatic (prod)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -1,85 +1,107 @@
 {% extends 'base.html' %}
 
-{% block title %}ESN ULB Brussels - create vote{% endblock %}
+{% block title %}ESN ULB Brussels - Create Vote{% endblock %}
 
 {% block content %}
+<div class="flex justify-center px-6 lg:px-8">
+  <div class="max-w-md w-full glass-card p-6 md:p-8">
+    <h1 class="text-2xl font-title font-bold mb-6 text-slate-800">Create a New Vote</h1>
 
-<div class="sm:w-full md:w-96 bg-zinc-50 px-6 pt-6 mx-auto pb-8">
-    <h2 class="text-2xl font-bold mb-4">Create a new vote</h2>
-    <form action="{% url 'create_vote' %}" method="post" class="pb-8 flex flex-col">
-        {% csrf_token %}
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Titre</label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" name="title" type="text" placeholder="Enter title" required>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description</label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" placeholder="Enter description" required></textarea>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="max_num_choices">Nombre max de choix</label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="max_num_choices" name="max_num_choices" type="number" min="1" value="1">
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="session_id">Session</label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="session_id" name="session_id" required>
-                {% for session in sessions %}
-                    <option value="{{ session.id }}">{{ session.title }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div id="options-container" class="flex flex-col space-y-4">
-            <label class="block text-gray-700 text-sm font-bold">Options</label>
-            <div class="flex items-center space-x-4 mb-2" id="option-1">
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" name="option_text" type="text" placeholder="Enter option" required>
-            </div>
-            <div class="flex items-center space-x-4 mb-2" id="option-2">
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" name="option_text" type="text" placeholder="Enter option" required>
-            </div>
-        </div>
+    <form action="{% url 'create_vote' %}" method="post" class="flex flex-col gap-4">
+      {% csrf_token %}
+      <div class="flex flex-col">
+        <label for="title" class="mb-2 text-sm font-medium text-slate-700">Title</label>
+        <input id="title" name="title" type="text" placeholder="Enter title"
+               class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow"
+               required>
+      </div>
 
-        <button type="button" class="w-12 mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" onclick="addOption()">
-            +
-        </button>
-            
-        <button type="submit" class="mt-6 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75">Create Vote</button>
+      <div class="flex flex-col">
+        <label for="description" class="mb-2 text-sm font-medium text-slate-700">Description</label>
+        <textarea id="description" name="description" placeholder="Enter description"
+                  class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow"
+                  required></textarea>
+      </div>
 
+      <div class="flex flex-col">
+        <label for="max_num_choices" class="mb-2 text-sm font-medium text-slate-700">Maximum Number of Choices</label>
+        <input id="max_num_choices" name="max_num_choices" type="number" min="1" value="1"
+               class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow">
+      </div>
+
+      <div class="flex flex-col">
+        <label for="session_id" class="mb-2 text-sm font-medium text-slate-700">Session</label>
+        <select id="session_id" name="session_id"
+                class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow"
+                required>
+          {% for session in sessions %}
+            <option value="{{ session.id }}">{{ session.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div id="options-container" class="flex flex-col gap-4">
+        <label class="text-sm font-medium text-slate-700">Options</label>
+        <div class="flex items-center gap-4">
+          <input name="option_text" type="text" placeholder="Enter option"
+                 class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow flex-grow"
+                 required>
+        </div>
+        <div class="flex items-center gap-4">
+          <input name="option_text" type="text" placeholder="Enter option"
+                 class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow flex-grow"
+                 required>
+        </div>
+      </div>
+
+      <button type="button" onclick="addOption()"
+              class="glass-btn px-4 py-2 rounded-2xl text-sm mx-auto" style="background-image: linear-gradient(90deg, rgba(65, 154, 186, 0.95), rgba(0,200,255,0.92));">
+        + Add Option
+      </button>
+
+      <button type="submit"
+              class="glass-btn px-4 py-3 rounded-2xl text-base mx-auto" style="background-image: linear-gradient(90deg, rgba(105, 186, 43, 0.95), rgba(66, 115, 23, 0.92));">
+        Create Vote
+      </button>
     </form>
 
-    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
-        Retour
+    <a href="{% url 'admin_view' %}" class="mt-8 w-full glass-btn px-4 py-3 rounded-2xl text-center"
+       style="background-image: linear-gradient(90deg, rgba(244,123,32,0.95), rgba(244,150,50,0.92));">
+      Back
     </a>
+  </div>
 </div>
 
 <script>
-    let optionCounter = 2;
+  let optionCounter = 2;
 
-    function addOption() {
-        optionCounter++;
-        const container = document.getElementById('options-container');
-        const div = document.createElement('div');
-        div.setAttribute('class', 'flex items-center space-x-4 mb-2');
-        div.setAttribute('id', 'option-' + optionCounter);
-        const input = document.createElement('input');
-        input.setAttribute('class', 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow');
-        input.setAttribute('name', 'option_text');
-        input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'Enter option');
-        input.setAttribute('required', '');
-        div.appendChild(input);
-        if (optionCounter > 2) {
-            const removeBtn = document.createElement('button');
-            removeBtn.setAttribute('type', 'button');
-            removeBtn.setAttribute('class', 'px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75');
-            removeBtn.textContent = '-';
-            removeBtn.onclick = function () {
-                container.removeChild(div);
-                optionCounter--;
-            };
-            div.appendChild(removeBtn);
-        }
-        container.appendChild(div);
+  function addOption() {
+    optionCounter++;
+    const container = document.getElementById('options-container');
+    const div = document.createElement('div');
+    div.setAttribute('class', 'flex items-center gap-4');
+    const input = document.createElement('input');
+    input.setAttribute('class', 'glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow flex-grow');
+    input.setAttribute('name', 'option_text');
+    input.setAttribute('type', 'text');
+    input.setAttribute('placeholder', 'Enter option');
+    input.setAttribute('required', '');
+    div.appendChild(input);
+
+    if (optionCounter > 2) {
+      const removeBtn = document.createElement('button');
+      removeBtn.setAttribute('type', 'button');
+      removeBtn.setAttribute('class', 'glass-btn px-4 py-2 rounded-2xl text-sm');
+      removeBtn.setAttribute('style', 'background-image: linear-gradient(90deg, rgba(244,123,32,0.95), rgba(244,150,50,0.92));');
+      removeBtn.textContent = 'Remove';
+      removeBtn.onclick = function () {
+        container.removeChild(div);
+        optionCounter--;
+      };
+      div.appendChild(removeBtn);
     }
-</script>
 
+    container.appendChild(div);
+  }
+</script>
 {% endblock %}

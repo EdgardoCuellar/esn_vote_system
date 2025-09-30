@@ -1,49 +1,44 @@
 {% extends 'base.html' %}
-
-{% block title %}ESN ULB Brussels - vote{% endblock %}
+{% block title %}ESN ULB Brussels - Vote{% endblock %}
 
 {% block content %}
-<div class="w-full bg-slate-50">
+<div class="max-w-md mx-auto my-8 glass-card p-6 md:p-8">
+  <h2 class="text-2xl font-title font-semibold mb-4 text-slate-800">{{ vote.title }}</h2>
 
-  <div class="max-w-md mx-auto my-8 p-6 bg-zinc-50 rounded-md shadow-md">
-    <h2 class="text-2xl font-semibold">{{vote.title}}</h2>
-    <form action="{% url 'vote' vote.id %}" method="post" class="flex flex-col space-y-4">
-      {% csrf_token %}
-      <label for="description" class="mb-1">{{vote.description}}</label>
-      <input type="hidden" name="vote_id" value="{{vote.id}}">
-      {% if vote.max_num_choices == 1 %}
-        {% for option in vote.options.all %}
-            <div class="flex items-center space-x-4 mb-2">
-                <input type="radio" name="option" value="{{option.id}}" required>
-                <span>{{option.option_text}}</span>
-            </div>
-        {% endfor %}
-      {% else %}
-          <span>Vous pouvez selectioner maximum {{ vote.max_num_choices }} options.</span>
-          {% for option in vote.options.all %}
-              <div class="flex items-center space-x-4 mb-2">
-                  <input type="checkbox" name="option" value="{{option.id}}" onchange="limitSelections(this)">
-                  <span>{{option.option_text}}</span>
-              </div>
-          {% endfor %}
-      {% endif %}
-      
-      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Voter</button>
-    </form>
-  </div>
+  <form action="{% url 'vote' vote.id %}" method="post" class="flex flex-col gap-4">
+    {% csrf_token %}
+    <p class="text-slate-600 mb-2">{{ vote.description }}</p>
+    <input type="hidden" name="vote_id" value="{{ vote.id }}">
 
+    {% if vote.max_num_choices == 1 %}
+      {% for option in vote.options.all %}
+      <label class="flex items-center gap-3 glass-input px-3 py-2 rounded-2xl">
+        <input type="radio" name="option" value="{{ option.id }}" required class="accent-blue-500">
+        <span>{{ option.option_text }}</span>
+      </label>
+      {% endfor %}
+    {% else %}
+      <p class="text-sm text-slate-600">Vous pouvez sélectionner maximum {{ vote.max_num_choices }} options.</p>
+      {% for option in vote.options.all %}
+      <label class="flex items-center gap-3 glass-input px-3 py-2 rounded-2xl">
+        <input type="checkbox" name="option" value="{{ option.id }}" onchange="limitSelections(this)" class="accent-blue-500">
+        <span>{{ option.option_text }}</span>
+      </label>
+      {% endfor %}
+    {% endif %}
+
+    <button type="submit" class="glass-btn rounded-2xl px-4 py-3" style="background-image: linear-gradient(90deg, rgba(5, 137, 186, 0.95), rgba(8, 173, 218, 0.92));">Voter</button>
+  </form>
 </div>
 
 <script>
-  function limitSelections(checkbox) {
-      var maxSelections = {{ vote.max_num_choices }};
-      var selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-      
-      if (selectedCheckboxes.length > maxSelections) {
-          checkbox.checked = false;
-          alert("Vous pouvez selectioner maximum " + maxSelections + " options.");
-      }
+function limitSelections(checkbox) {
+  var maxSelections = {{ vote.max_num_choices }};
+  var selected = document.querySelectorAll('input[type="checkbox"]:checked');
+  if (selected.length > maxSelections) {
+    checkbox.checked = false;
+    alert("Vous pouvez sélectionner maximum " + maxSelections + " options.");
   }
+}
 </script>
-
 {% endblock %}

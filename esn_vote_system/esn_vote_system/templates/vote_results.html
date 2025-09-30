@@ -1,48 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-
 {% load custom_filter %}
+
 <div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8 pb-8">
+  <div class="max-w-md w-full glass-card p-6 md:p-8">
+    <h1 class="text-2xl font-title font-bold mb-4 text-slate-800">ESN ULB Brussels - Results</h1>
+    <h2 class="text-lg font-semibold mb-4 text-slate-700">{{ vote.title }}</h2>
+    <h2 class="text-sm font-medium mb-4 text-slate-600">Date: {{ vote.session.date }}</h2>
+    <p class="text-sm text-slate-600 mb-4">{{ vote.description }}</p>
+    <p class="text-sm text-slate-600">Number of votes: {{ vote.id|get_number_of_votes }}</p>
+  </div>
 
-    <div class="bg-zinc-50 max-w-md flex flex-col w-full shadow-md px-6 pt-6">
-        <h1 class="text-2xl font-bold mb-4">ESN ULB Brussels - Resultats</h1>
-        <h2 class="text-lg font-semibold mb-4">{{vote.title}}</h2>
-        <h2 class="text-lg font-semibold mb-4">date: {{vote.session.date}}</h2>
-        <span class="text-lg font-semibold mb-4">{{vote.description}}</span>
-        <span class="text-lg font-semibold mb-4">Nombre de votes: {{vote.id|get_number_of_votes}}</span>
+  {% if vote.max_num_choices == 1 %}
+  <div class="max-w-md w-full glass-card p-6 md:p-8 mt-4">
+    <canvas id="myChart"></canvas>
+  </div>
+  {% else %}
+  <div class="max-w-md w-full glass-card p-6 md:p-8 mt-4">
+    <canvas id="myChart"></canvas>
+  </div>
+  {% endif %}
+
+  <div class="max-w-md w-full glass-card p-6 md:p-8 mt-4">
+    <h2 class="text-lg font-semibold mb-4 text-slate-700">Votes</h2>
+    <div class="flex flex-col space-y-2">
+      {% for option in options %}
+      <div class="flex flex-row justify-between items-center py-2 px-4 border-b border-slate-200">
+        <span class="text-slate-700">{{ option.option_text }}</span>
+        <span class="text-slate-700">{{ option.number_votes }}</span>
+      </div>
+      {% endfor %}
     </div>
+  </div>
 
-    {% if vote.max_num_choices == 1%}
-        <div class="max-w-md w-full shadow-md p-6">
-            <canvas id="myChart"></canvas>
-        </div>
-    {% else %}
-        <div class="max-w-md w-full shadow-md p-6">
-            <canvas id="myChart"></canvas>
-        </div>
-    {% endif %}
-
-    <div class="bg-zinc-50 flex flex-col max-w-md w-full shadow-md p-6">
-        <div class="flex flex-col">
-            {% for option in options %}
-                <div class="flex flex-row justify-between items-center py-2 px-4 border-b">
-                    <span>{{ option.option_text }}</span>
-                    <span>{{ option.number_votes }}</span>
-                </div>
-            {% endfor %}
-    </div>
-
-    <a href="{% url 'admin_view' %}" class="mt-8 w-full bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
-      Retour
-    </a>
-
+  <a href="{% url 'admin_view' %}" class="mt-8 glass-btn px-8 py-3 rounded-2xl text-base mx-auto"
+     style="background-image: linear-gradient(90deg, rgba(244,123,32,0.95), rgba(244,150,50,0.92));">
+    Back
+  </a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-{% if vote.max_num_choices == 1%}
+{% if vote.max_num_choices == 1 %}
 <script>
   const ctx = document.getElementById('myChart');
 
@@ -51,20 +51,69 @@
     data: {
       labels: [
         {% for option in options %}
-            '{{ option.option_text }}',
+          '{{ option.option_text }}',
         {% endfor %}
       ],
       datasets: [{
         label: '# of Votes',
         data: [
-            {% for option in options %}
-                {{ option.number_votes }},
-            {% endfor %}
+          {% for option in options %}
+            {{ option.number_votes }},
+          {% endfor %}
+        ],
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(153, 102, 255, 0.5)'
+        ],
+        borderColor: [
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(153, 102, 255, 1)'
         ],
         borderWidth: 1
       }]
     },
     options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        }
+      }
+    }
+  });
+</script>
+{% else %}
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        {% for option in options %}
+          '{{ option.option_text }}',
+        {% endfor %}
+      ],
+      datasets: [{
+        label: '# of Votes',
+        data: [
+          {% for option in options %}
+            {{ option.number_votes }},
+          {% endfor %}
+        ],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true
@@ -73,37 +122,5 @@
     }
   });
 </script>
-{% else %}
-<script>
-    const ctx = document.getElementById('myChart');
-  
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: [
-          {% for option in options %}
-              '{{ option.option_text }}',
-          {% endfor %}
-        ],
-        datasets: [{
-          label: '# of Votes',
-          data: [
-              {% for option in options %}
-                  {{ option.number_votes }},
-              {% endfor %}
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  </script>
 {% endif %}
-
 {% endblock %}

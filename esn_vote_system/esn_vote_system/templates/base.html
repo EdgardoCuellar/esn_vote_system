@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}ESN ULB Brussels - Vote{% endblock %}</title>
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
+  <!-- Hotwire Turbo Drive (intercepte les navigations pour éviter full page reloads) -->
+  <script src="
+    https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.18/dist/turbo.es2017-umd.min.js
+  "></script>
+
+
+  <!-- Tailwind CSS & Flowbite -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
   <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/KhxD0v7/favicon.png">
@@ -134,9 +142,17 @@
   </style>
 </head>
 <body class="min-h-screen">
-  <!-- Add the animated gradient background -->
-  <div class="animated-gradient" aria-hidden="true"></div>
-  <div class="bg-blobs" aria-hidden="true"></div>
+
+  <div id="animated-gradient"
+       class="animated-gradient"
+       data-turbo-permanent
+       aria-hidden="true"></div>
+
+  <div id="persistent-blobs"
+       class="bg-blobs"
+       data-turbo-permanent
+       aria-hidden="true"></div>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
@@ -160,11 +176,11 @@
   <script>
     (function () {
       const blobConfig = {
-        count: 12, // Number of blobs
+        count: 8, // Number of blobs
         colors: ['--pink-r', '--cyan-r', '--green-r', '--orange-r', '--blue-r'], // Available colors
         minSize: 25, // Minimum size (vmin)
-        maxSize: 80, // Maximum size (vmin)
-        blur: '14px', // Blur amount
+        maxSize: 60, // Maximum size (vmin)
+        blur: '4px', // Blur amount
         opacity: 0.75, // Opacity
       };
 

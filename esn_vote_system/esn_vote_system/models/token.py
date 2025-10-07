@@ -28,7 +28,7 @@ class Token(models.Model):
     def create_register_token(session_id):
         session = VoteSession.objects.get(id=session_id)
         return Token.objects.create(
-            token=Token.generate_token(12),
+            token=Token.generate_token(5),
             vote_session=session
         )
 

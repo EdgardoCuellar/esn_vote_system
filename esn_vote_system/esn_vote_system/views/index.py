@@ -29,4 +29,5 @@ class IndexView(View):
 
 def logout(request):
     request.session['token'] = None
+    request.session['admin_token'] = None
     return redirect('index')

@@ -4,7 +4,7 @@
 {% load custom_filter %}
 
 <div class="flex flex-col min-h-full justify-center items-center px-6 lg:px-8 pb-8">
-  <div class="max-w-md w-full glass-card p-6 md:p-8">
+  <div class="max-w-md w-full glass-card p-6 md:p-8 card-accent-green">
     <h1 class="text-2xl font-title font-bold mb-4 text-slate-800">ESN ULB Brussels - Results</h1>
     <h2 class="text-lg font-semibold mb-4 text-slate-700">{{ vote.title }}</h2>
     <h2 class="text-sm font-medium mb-4 text-slate-600">Date: {{ vote.session.date }}</h2>
@@ -34,8 +34,7 @@
     </div>
   </div>
 
-  <a href="{% url 'admin_view' %}" class="mt-8 glass-btn px-8 py-3 rounded-2xl text-base mx-auto"
-     style="background-image: linear-gradient(90deg, rgba(244,123,32,0.95), rgba(244,150,50,0.92));">
+  <a href="{% url 'admin_view' %}" class="mt-8 glass-btn btn-orange px-8 py-3 rounded-2xl text-base mx-auto">
     Back
   </a>
 </div>

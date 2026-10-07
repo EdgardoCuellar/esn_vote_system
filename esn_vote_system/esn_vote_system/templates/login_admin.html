@@ -2,7 +2,7 @@
 {% block title %}ESN ULB Brussels - Admin login{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto my-8 glass-card p-6 md:p-8">
+<div class="max-w-md mx-auto my-8 glass-card p-6 md:p-8 card-accent-blue">
   <h2 class="text-2xl font-title font-semibold mb-6 text-slate-800">Admin Login</h2>
 
   <form action="{% url 'login_admin' %}" method="post" class="flex flex-col gap-4">
@@ -18,8 +18,7 @@
              placeholder="************" autocomplete="off">
     </div>
 
-    <button type="submit" class="glass-btn rounded-2xl px-4 py-3"
-            style="background-image: linear-gradient(90deg, rgba(202, 10, 125, 0.95), rgba(236,0,140,0.92));">
+    <button type="submit" class="glass-btn rounded-2xl px-4 py-3">
       Login
     </button>
   </form>

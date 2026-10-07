@@ -5,151 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}ESN ULB Brussels - Vote{% endblock %}</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Lexend only -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300..900&display=swap" rel="stylesheet">
 
 
-  <!-- Tailwind CSS & Flowbite -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+  
   <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/KhxD0v7/favicon.png">
 
   {% load custom_filter %}
 
-  <style>
-    /* fonts */
-    .font-title { font-family: 'Lexend', sans-serif; }
-    .font-body  { font-family: 'Plus Jakarta Sans', sans-serif; }
-    h1,h2,h3,h4,h5,h6 { font-family: 'Lexend', sans-serif; }
-    p,a,span,label,input,button { font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing:antialiased; }
-
-    /* palette & background gradient */
+    <style>
+    /* === ESN Chroma Palette === */
     :root {
+      --pink: #EC008C;
+      --cyan: #00AEEF;
+      --green: #7AC143;
+      --orange: #F47B20;
+      --blue: #2E3192;
       --pink-r: 236, 0, 140;
       --cyan-r: 0, 174, 239;
       --green-r: 122, 193, 67;
       --orange-r: 244, 123, 32;
       --blue-r: 46, 49, 146;
-
-      --bg-top: #f0f6fb;
-      --bg-bottom: #f6fbff;
-      --lens-blur: 14px;
-      --lens-opacity: 0.75;
     }
 
+    /* === Typography === */
+    * { font-family: 'Lexend', sans-serif; }
     body {
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background: #fcfcfc;
       min-height: 100vh;
       margin: 0;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* container for blobs */
-    .bg-blobs {
-      position: fixed;
-      inset: 0;
-      z-index: -30;
-      pointer-events: none;
-      overflow: visible;
-    }
-
-    /* blob styles */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(var(--lens-blur));
-      opacity: var(--lens-opacity);
-      mix-blend-mode: screen;
-      transform: translate3d(0, 0, 0);
-      will-change: transform, opacity;
-      pointer-events: none;
-      background-repeat: no-repeat;
-      transition: opacity 0.3s linear;
-    }
-
-    /* glass utilities */
+    /* === CARDS: clean white with colored top accent === */
     .glass-card {
-      background: rgba(255,255,255,0.56);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.45);
-      box-shadow: 0 10px 40px rgba(20, 24, 40, 0.08);
-      border-radius: 18px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
     }
-    .glass-pill {
-      background: rgba(255,255,255,0.62);
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.45);
-      padding: .45rem .7rem;
-      border-radius: 999px;
-      box-shadow: 0 6px 20px rgba(20, 24, 40, 0.05);
-    }
-    .glass-input {
-      background: rgba(255,255,255,0.28);
-      border: 1px solid rgba(255,255,255,0.35);
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
-    }
+    .card-accent-pink    { border-top: 4px solid var(--pink); }
+    .card-accent-cyan    { border-top: 4px solid var(--cyan); }
+    .card-accent-green   { border-top: 4px solid var(--green); }
+    .card-accent-orange  { border-top: 4px solid var(--orange); }
+    .card-accent-blue    { border-top: 4px solid var(--blue); }
+
+    /* === BUTTONS: gradient fills with hover lift === */
     .glass-btn {
-      background-image: linear-gradient(90deg,
-        rgba(var(--pink-r),0.92),
-        rgba(var(--cyan-r),0.95));
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
       color: white;
       font-weight: 600;
-      box-shadow: 0 8px 18px rgba(46,49,146,0.12);
+      font-size: 0.9375rem;
+      border: none;
+      border-radius: 10px;
+      padding: 0.625rem 1.25rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 6px rgba(46,49,146,0.10);
     }
+    .glass-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(46,49,146,0.18);
+    }
+    .glass-btn:active {
+      transform: translateY(0px);
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--cyan), #40c8ff);
+    }
+    .btn-green {
+      background: linear-gradient(135deg, var(--green), #8fd65e);
+    }
+    .btn-orange {
+      background: linear-gradient(135deg, var(--orange), #f7a34b);
+    }
+    .btn-blue {
+      background: linear-gradient(135deg, var(--blue), #5a5db5);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #e53935, var(--orange));
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: var(--cyan);
+      color: white;
+    }
+
+    /* === PILL (small tags / logout) === */
+    .glass-pill {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: .45rem .85rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+    }
+
+    /* === INPUTS: subtle inset style === */
+    .glass-input {
+      background: #f5f7fa;
+      border: 1.5px solid #e2e5eb;
+      border-radius: 10px;
+      padding: 0.625rem 0.875rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .glass-input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(var(--cyan-r), 0.12);
+    }
+
     .focus-ring:focus {
       outline: none;
-      box-shadow: 0 0 0 4px rgba(0,174,239,0.12);
-      border-color: rgba(0,174,239,0.6);
+      box-shadow: 0 0 0 3px rgba(var(--cyan-r), 0.12);
+      border-color: var(--cyan);
     }
 
+    /* === LAYOUT === */
     .page-content { position: relative; z-index: 10; }
-    .app-container {
-      padding-left: 1.25rem; padding-right: 1.25rem;
-    }
+    .app-container { padding-left: 1.25rem; padding-right: 1.25rem; }
     @media (min-width: 768px) { .app-container { padding-left: 4rem; padding-right: 4rem; } }
 
-    /* Add a gradient background animation */
-    .animated-gradient {
+    /* === BACKGROUND DUOTONE: very subtle ESN cross === */
+    .bg-duotone {
       position: fixed;
       inset: 0;
       z-index: -40;
-      background: linear-gradient(120deg, #FAFAFA, #685f93ff);
-      background-size: 300% 300%;
-      animation: gradientMove 30s ease infinite;
+      pointer-events: none;
+      background: linear-gradient(135deg,
+        rgba(var(--pink-r), 0.03) 0%,
+        transparent 40%,
+        rgba(var(--blue-r), 0.02) 70%,
+        transparent 100%
+      );
+      background-size: 200% 200%;
+      animation: duotoneShift 60s ease-in-out infinite alternate;
+    }
+    @keyframes duotoneShift {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
     }
 
-    @keyframes gradientMove {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+    /* === GEOMETRIC DOTS: subtle color vignettes === */
+    .bg-dots {
+      position: fixed;
+      inset: 0;
+      z-index: -39;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(var(--pink-r), 0.07) 0%, transparent 60%),
+        radial-gradient(circle at 75% 75%, rgba(var(--cyan-r), 0.06) 0%, transparent 60%),
+        radial-gradient(circle at 85% 20%, rgba(var(--green-r), 0.05) 0%, transparent 60%),
+        radial-gradient(circle at 25% 80%, rgba(var(--orange-r), 0.04) 0%, transparent 60%);
+      background-repeat: no-repeat;
     }
+
+    /* === SUBTLE FLOATING BLOBS === */
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: -38;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.10;
+      mix-blend-mode: screen;
+      will-change: transform;
+      pointer-events: none;
+      transition: opacity 0.3s linear;
+    }
+
+    /* === BADGES === */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge-pink   { background: rgba(var(--pink-r), 0.12); color: var(--pink); }
+    .badge-cyan   { background: rgba(var(--cyan-r), 0.12); color: var(--cyan); }
+    .badge-green  { background: rgba(var(--green-r), 0.15); color: var(--green); }
+    .badge-orange { background: rgba(var(--orange-r), 0.15); color: var(--orange); }
+    .badge-blue   { background: rgba(var(--blue-r), 0.12); color: var(--blue); }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <div id="animated-gradient"
-       class="animated-gradient"
-       data-turbo-permanent
-       aria-hidden="true"></div>
-
-  <div id="persistent-blobs"
-       class="bg-blobs"
-       data-turbo-permanent
-       aria-hidden="true"></div>
+  <div class="bg-duotone" aria-hidden="true"></div>
+  <div class="bg-dots" aria-hidden="true"></div>
+  <div id="persistent-blobs" class="bg-blobs" aria-hidden="true"></div>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+  
 
   <div class="app-container page-content pt-6 text-lg">
     <div class="w-full flex flex-col md:flex-row items-center relative">
@@ -169,98 +233,47 @@
   </main>
 
   <script>
-    (function () {
-      const blobConfig = {
-        count: 8, // Number of blobs
-        colors: ['--pink-r', '--cyan-r', '--green-r', '--orange-r', '--blue-r'], // Available colors
-        minSize: 25, // Minimum size (vmin)
-        maxSize: 60, // Maximum size (vmin)
-        blur: '4px', // Blur amount
-        opacity: 0.75, // Opacity
-      };
-
-      const container = document.querySelector('.bg-blobs');
-
-      // Generate blobs dynamically
-      for (let i = 0; i < blobConfig.count; i++) {
-        const blob = document.createElement('div');
-        blob.classList.add('blob');
-        blob.style.background = `rgb(var(${blobConfig.colors[Math.floor(Math.random() * blobConfig.colors.length)]}))`;
-        blob.style.width = blob.style.height = `${Math.random() * (blobConfig.maxSize - blobConfig.minSize) + blobConfig.minSize}vmin`;
-        blob.style.left = `${Math.random() * 100}%`;
-        blob.style.top = `${Math.random() * 100}%`;
-        blob.style.filter = `blur(${blobConfig.blur})`;
-        blob.style.opacity = blobConfig.opacity;
-        container.appendChild(blob);
+    (function() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var container = document.getElementById('persistent-blobs');
+      if (!container) return;
+      var colors = ['var(--pink-r)', 'var(--cyan-r)', 'var(--green-r)', 'var(--orange-r)', 'var(--blue-r)'];
+      for (var i = 0; i < 4; i++) {
+        var el = document.createElement('div');
+        el.classList.add('blob');
+        el.style.background = 'rgb(' + colors[Math.floor(Math.random() * colors.length)] + ')';
+        var s = 12 + Math.random() * 18;
+        el.style.width = s + 'vmin'; el.style.height = el.style.width;
+        el.style.left = (5 + Math.random() * 90) + '%';
+        el.style.top = (5 + Math.random() * 90) + '%';
+        container.appendChild(el);
       }
-
-      // Smooth motion script (same as before)
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        return; // no animation
-      }
-
-      const blobs = Array.from(document.querySelectorAll('.blob'));
-
+      var blobs = Array.from(container.querySelectorAll('.blob'));
       if (!blobs.length) return;
-
-      const targetFPS = 30;
-      const frameInterval = 1000 / targetFPS;
-      let lastFrame = performance.now();
-
-      const state = blobs.map((el) => {
-        const rect = el.getBoundingClientRect();
-        const w = rect.width || Math.max(window.innerWidth * 0.6, 300);
-        const h = rect.height || w;
-        const baseSpeed = 0.018;
-        const f1 = baseSpeed * (0.6 + Math.random() * 0.8);
-        const f2 = baseSpeed * (0.9 + Math.random() * 1.2);
-        const f3 = baseSpeed * (0.035 + Math.random() * 0.055);
-        const ampX = Math.min(window.innerWidth * 0.6, w * (0.25 + Math.random() * 0.7));
-        const ampY = Math.min(window.innerHeight * 0.6, h * (0.18 + Math.random() * 0.6));
-        const p1 = Math.random() * Math.PI * 2;
-        const p2 = Math.random() * Math.PI * 2;
-        const p3 = Math.random() * Math.PI * 2;
-        const rotAmp = 6 + Math.random() * 8;
-        return { el, ampX, ampY, f1, f2, f3, p1, p2, p3, rotAmp };
+      var state = blobs.map(function(el) {
+        return {
+          el: el,
+          f1: 0.004 * (0.5 + Math.random() * 0.5),
+          f2: 0.005 * (0.6 + Math.random() * 0.8),
+          ampX: 4 + Math.random() * 6,
+          ampY: 2 + Math.random() * 4,
+          p1: Math.random() * 6.2832,
+          p2: Math.random() * 6.2832
+        };
       });
-
-      let running = true;
-      document.addEventListener('visibilitychange', () => {
-        running = !document.hidden;
-        if (running) lastFrame = performance.now();
-      }, { passive: true });
-
-      function animate(now) {
-        if (!running) {
-          requestAnimationFrame(animate);
-          return;
+      var running = true;
+      document.addEventListener('visibilitychange', function() { running = !document.hidden; }, { passive: true });
+      function animate() {
+        if (!running) { requestAnimationFrame(animate); return; }
+        var t = performance.now() * 0.0005;
+        for (var i = 0; i < state.length; i++) {
+          var s = state[i];
+          var x = Math.sin(s.f1 * t + s.p1) * s.ampX;
+          var y = Math.cos(s.f2 * t + s.p2) * s.ampY;
+          s.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px, ' + y.toFixed(1) + 'px, 0)';
         }
-        const dt = now - lastFrame;
-        if (dt < frameInterval) {
-          requestAnimationFrame(animate);
-          return;
-        }
-        lastFrame = now;
-        const t = now * 0.001;
-
-        for (let i = 0; i < state.length; i++) {
-          const s = state[i];
-          const x = Math.sin(2 * Math.PI * s.f1 * t + s.p1) * s.ampX
-                  + Math.sin(2 * Math.PI * s.f2 * t + s.p2) * (s.ampX * 0.45)
-                  + Math.sin(2 * Math.PI * s.f3 * t + s.p3) * (s.ampX * 0.25);
-
-          const y = Math.cos(2 * Math.PI * s.f2 * t + s.p2) * s.ampY
-                  + Math.cos(2 * Math.PI * s.f1 * t + s.p1) * (s.ampY * 0.5)
-                  + Math.sin(2 * Math.PI * s.f3 * t + s.p3) * (s.ampY * 0.28);
-
-          const rot = Math.sin(2 * Math.PI * (s.f1 * 0.5) * t + s.p1) * s.rotAmp;
-
-          s.el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${rot.toFixed(2)}deg)`;
-        }
-
         requestAnimationFrame(animate);
       }
-
       requestAnimationFrame(animate);
     })();
   </script>

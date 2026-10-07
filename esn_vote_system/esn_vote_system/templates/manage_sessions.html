@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}ESN ULB Brussels - Manage Sessions{% endblock %}
+
+{% block content %}
+{% load custom_filter %}
+
+<div class="flex flex-col items-center px-6 lg:px-8 pb-8">
+
+  <!-- Create New Session -->
+  <div class="max-w-2xl w-full glass-card p-6 md:p-8 mb-6">
+    <h1 class="text-2xl font-title font-bold mb-2 text-slate-800">Manage Vote Sessions</h1>
+    <p class="text-sm text-slate-500 mb-6">Create a new session, update the number of participants, or close a session.</p>
+
+    <h2 class="text-lg font-semibold mb-4 text-slate-700">Create a New Session</h2>
+
+    {% if error %}
+    <div class="text-red-600 bg-red-50/60 border border-red-200/60 rounded-md p-3 text-sm mb-4">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="{% url 'manage_sessions' %}" class="flex flex-col gap-4">
+      {% csrf_token %}
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1 flex flex-col">
+          <label for="title" class="mb-1 text-sm font-medium text-slate-700">Session Title *</label>
+          <input id="title" name="title" type="text" placeholder="e.g. General Assembly 2026"
+                 class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow"
+                 required>
+        </div>
+
+        <div class="flex-1 flex flex-col">
+          <label for="date" class="mb-1 text-sm font-medium text-slate-700">Date</label>
+          <input id="date" name="date" type="datetime-local"
+                 class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 transition-shadow">
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <label for="description" class="mb-1 text-sm font-medium text-slate-700">Description</label>
+        <textarea id="description" name="description" rows="2" placeholder="Optional description for this session..."
+                  class="glass-input focus-ring px-4 py-3 rounded-2xl text-slate-800 placeholder:text-slate-400 transition-shadow"></textarea>
+      </div>
+
+      <button type="submit"
+              class="glass-btn px-6 py-3 rounded-2xl text-base mx-auto"
+              style="background-image: linear-gradient(90deg, rgba(0,174,239,0.95), rgba(0,200,255,0.92));">
+        Create Session
+      </button>
+    </form>
+  </div>
+
+  <!-- Sessions List -->
+  <div class="max-w-2xl w-full glass-card p-6 md:p-8">
+    <h2 class="text-xl font-title font-semibold mb-4 text-slate-700">
+      All Sessions
+      <span class="text-sm font-normal text-slate-500">({{ sessions|length }} total)</span>
+    </h2>
+
+    {% if not sessions %}
+      <p class="text-sm text-slate-500 italic">No sessions yet. Create one above!</p>
+    {% else %}
+      <div class="flex flex-col space-y-4">
+        {% for session in sessions %}
+        <div class="glass-card rounded-2xl p-4 md:p-5 border {% if session.is_closed %}border-slate-300/50{% else %}border-green-400/30{% endif %}">
+          <div class="flex flex-col md:flex-row md:items-center gap-3">
+            <!-- Session Info -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-3 mb-1">
+                <h3 class="text-base font-semibold text-slate-800 truncate">{{ session.title }}</h3>
+                {% if session.is_closed %}
+                  <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-xs font-medium bg-slate-200 text-slate-600">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4"/></svg>
+                    Closed
+                  </span>
+                {% else %}
+                  <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4"/></svg>
+                    Open
+                  </span>
+                {% endif %}
+              </div>
+              {% if session.description %}
+              <p class="text-xs text-slate-500 mb-1">{{ session.description|truncatechars:120 }}</p>
+              {% endif %}
+              <div class="flex flex-wrap gap-x-4 text-xs text-slate-400 mt-1">
+                <span>📅 {{ session.date|date:"d/m/Y H:i"|default:"No date set" }}</span>
+                <span>🆔 #{{ session.id }}</span>
+              </div>
+            </div>
+<!-- Participants (inline editable) -->
+            <div class="flex-shrink-0">
+              <form method="post" action="{% url 'update_participants' session.id %}" class="flex items-center gap-2">
+                {% csrf_token %}
+                <label class="text-xs text-slate-500 font-medium">Participants:</label>
+                <input type="number" name="number_of_participants" value="{{ session.number_of_participants }}"
+                       min="0"
+                       class="glass-input w-20 px-2 py-1.5 rounded-xl text-sm text-center text-slate-800 transition-shadow">
+                <button type="submit"
+                        class="glass-btn px-3 py-1.5 rounded-xl text-xs"
+                        style="background-image: linear-gradient(90deg, rgba(122,193,67,0.95), rgba(140,210,80,0.92));">
+                  Update
+                </button>
+              </form>
+            </div>
+
+            <!-- Close button (only for open sessions) -->
+            <div class="flex-shrink-0">
+              {% if not session.is_closed %}
+              <form method="post" action="{% url 'close_session' session.id %}"
+                    onsubmit="return confirm('Close session &quot;{{ session.title|escapejs }}&quot;? All votes in this session will still be visible but no new tokens can be used.');">
+                {% csrf_token %}
+                <button type="submit"
+                        class="glass-btn px-3 py-1.5 rounded-xl text-xs"
+                        style="background-image: linear-gradient(90deg, rgba(244,67,54,0.95), rgba(244,80,80,0.92));">
+                  <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><line x1="2" y1="2" x2="14" y2="2"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+                    Close
+                  </span>
+                </button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Navigation -->
+  <a href="{% url 'admin_view' %}" class="mt-8 glass-btn px-8 py-3 rounded-2xl text-base mx-auto"
+     style="background-image: linear-gradient(90deg, rgba(244,123,32,0.95), rgba(244,150,50,0.92));">
+    ← Back to Admin
+  </a>
+</div>
+{% endblock %}

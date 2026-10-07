@@ -125,6 +125,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Public site URL (used for QR codes)
+PUBLIC_SITE_URL = 'https://nedgardo.pythonanywhere.com/'
+
 STATIC_URL = '/static/'   # <- important que ça commence et finisse par /
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # ← ton dossier "static" si tu en as un

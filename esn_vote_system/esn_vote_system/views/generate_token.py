@@ -3,6 +3,7 @@ from django.views import View
 from esn_vote_system.models.token import Token
 from esn_vote_system.models.vote_session import VoteSession
 from esn_vote_system.models.vote import Vote, VoteOption
+from esn_vote_system.utils import generate_qr_base64, build_vote_url
 
 from django.conf import settings
 
@@ -25,7 +26,17 @@ class GenerateToken(View):
         
         if session_id:
             token = Token.create_register_token(session_id)
-            return render (request, self.html_link, {'token': token, 'sessions': VoteSession.get_open_vote_sessions()})
+            
+            # Generate QR code data URI
+            vote_url = build_vote_url(token.token)
+            qr_data_uri = generate_qr_base64(vote_url)
+            
+            return render (request, self.html_link, {
+                'token': token,
+                'qr_data_uri': qr_data_uri,
+                'vote_url': vote_url,
+                'sessions': VoteSession.get_open_vote_sessions()
+            })
 
         error_message = 'Clé invalide !'
 
